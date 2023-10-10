@@ -1,8 +1,8 @@
-import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Post, Put, Query } from '@nestjs/common';
 import { Types } from 'mongoose';
 
 import { MongoIdValidationPipe } from '@backend';
-import { CreatePublicationValidation, UpdatePublicationValidation } from '@common';
+import { PublicationValidationSchema } from '@common';
 import { GetListQueryParams } from './helpers';
 import { IPublicationsModule } from './interface';
 import { PublicationsService } from './service';
@@ -12,7 +12,7 @@ export class PublicationsController implements IPublicationsModule {
   constructor(@Inject(PublicationsService) private readonly publicationsService: PublicationsService) {}
 
   @Post()
-  async create(@Body() dto: CreatePublicationValidation) {
+  async create(@Body() dto: PublicationValidationSchema) {
     return this.publicationsService.create(dto);
   }
 
@@ -31,8 +31,8 @@ export class PublicationsController implements IPublicationsModule {
     return this.publicationsService.getList(queryParams);
   }
 
-  @Patch(':publicationId')
-  update(@Param('publicationId', MongoIdValidationPipe) id: Types.ObjectId, @Body() dto: UpdatePublicationValidation) {
+  @Put(':publicationId')
+  update(@Param('publicationId', MongoIdValidationPipe) id: Types.ObjectId, @Body() dto: PublicationValidationSchema) {
     return this.publicationsService.update(id, dto);
   }
 }

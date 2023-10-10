@@ -9,7 +9,7 @@ import * as request from 'supertest';
 
 import { validationPipeOptions } from '@backend';
 import { MongoDbPublications } from '../../../database/models';
-import { defaultCreatePublication, defaultUpdatePublication, publicationFakerObject } from './helpers';
+import { defaultPublicationReqBody, publicationFakerObject } from './helpers';
 import { PublicationsModule } from '../module';
 
 describe('Publications module e2e test', () => {
@@ -41,7 +41,7 @@ describe('Publications module e2e test', () => {
   beforeEach(async () => {
     await publicationsModel.deleteMany({});
 
-    publication = await publicationsModel.create(defaultCreatePublication);
+    publication = await publicationsModel.create(defaultPublicationReqBody);
   });
 
   afterAll(async () => {
@@ -139,7 +139,7 @@ describe('Publications module e2e test', () => {
           .expect('Content-Type', /json/)
           .expect(response => {
             expect(response.body).toEqual({
-              ...defaultCreatePublication,
+              ...defaultPublicationReqBody,
               _id: expect.any(String),
               createdAt: expect.any(String),
               updatedAt: expect.any(String),
@@ -185,7 +185,7 @@ describe('Publications module e2e test', () => {
             perPage: 10,
             publications: [
               {
-                ...defaultCreatePublication,
+                ...defaultPublicationReqBody,
                 _id: expect.any(String),
                 createdAt: expect.any(String),
                 updatedAt: expect.any(String),
@@ -212,20 +212,19 @@ describe('Publications module e2e test', () => {
     });
   });
 
-  describe('(PATCH) update publication endpoint', () => {
+  describe('(PUT) update publication endpoint', () => {
     it('should update a publication', () => {
       return (
         request
           .default(app.getHttpServer())
           // @ts-ignore
-          .patch(`${rootPath}/${publication._id}`)
-          .send(defaultUpdatePublication)
+          .put(`${rootPath}/${publication._id}`)
+          .send(defaultPublicationReqBody)
           .expect(200)
           .expect('Content-Type', /json/)
           .expect(response => {
             expect(response.body).toEqual({
-              ...defaultCreatePublication,
-              ...defaultUpdatePublication,
+              ...defaultPublicationReqBody,
               _id: expect.any(String),
               createdAt: expect.any(String),
               updatedAt: expect.any(String),
@@ -243,15 +242,41 @@ describe('Publications module e2e test', () => {
         request
           .default(app.getHttpServer())
           // @ts-ignore
-          .patch(`${rootPath}/${publication._id}`)
+          .put(`${rootPath}/${publication._id}`)
           .send(invalidBody)
           .expect(400)
           .expect('Content-Type', /json/)
           .expect(response => {
             expect(response.body.message).toEqual([
+              'categoryAirline must be a string',
+              'categoryAirline should not be empty',
+              'categoryProcurement must be a string',
+              'categoryProcurement should not be empty',
+              'distributor must be a string',
+              'distributor should not be empty',
+              'genre must contain at least 1 elements',
+              'each value in genre must be a string',
+              'genre must be an array',
+              'genre should not be empty',
+              'lab must be a string',
+              'lab should not be empty',
               'language must contain at least 1 elements',
               'each value in language must be a string',
               'language must be an array',
+              'needDrm must be a boolean value',
+              'needDrm should not be empty',
+              'needWireless must be a boolean value',
+              'needWireless should not be empty',
+              'originalSynopsis must be shorter than or equal to 300 characters',
+              'originalSynopsis must be a string',
+              'originalSynopsis should not be empty',
+              'originalTitle must be a string',
+              'originalTitle should not be empty',
+              'originCountry must be a string',
+              'originCountry should not be empty',
+              'quantity must be a positive number',
+              'quantity must be an integer number',
+              'quantity should not be empty',
             ]);
             expect(response.body.error).toEqual('Bad Request');
           })
@@ -261,8 +286,8 @@ describe('Publications module e2e test', () => {
     it('should try to update an unexistent publication', () => {
       return request
         .default(app.getHttpServer())
-        .patch(`${rootPath}/${faker.database.mongodbObjectId()}`)
-        .send(defaultUpdatePublication)
+        .put(`${rootPath}/${faker.database.mongodbObjectId()}`)
+        .send(defaultPublicationReqBody)
         .expect(404)
         .expect('Content-Type', /json/)
         .expect(response => {
@@ -273,8 +298,8 @@ describe('Publications module e2e test', () => {
     it('should try to update a publication with an invalid ID', () => {
       return request
         .default(app.getHttpServer())
-        .patch(`${rootPath}/test`)
-        .send(defaultUpdatePublication)
+        .put(`${rootPath}/test`)
+        .send(defaultPublicationReqBody)
         .expect(400)
         .expect('Content-Type', /json/)
         .expect(response => {

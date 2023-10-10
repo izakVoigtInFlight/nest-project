@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
 import { ErrorHandler } from '@backend';
-import { defaultCreatePublication } from './helpers';
+import { defaultPublicationReqBody } from './helpers';
 import { MongoDbPublications } from '../../../database/models';
 import { PublicationsController } from '../controller';
 import { PublicationsService } from '../service';
@@ -59,12 +59,12 @@ describe('Publications module integration test', () => {
 
   describe('Create endpoint', () => {
     it('should create a new publication', async () => {
-      const result = await controller.create(defaultCreatePublication);
+      const result = await controller.create(defaultPublicationReqBody);
 
       console.log(result);
 
       expect(service.create).toHaveBeenCalledTimes(1);
-      expect(service.create).toHaveBeenCalledWith(defaultCreatePublication);
+      expect(service.create).toHaveBeenCalledWith(defaultPublicationReqBody);
     });
   });
 });

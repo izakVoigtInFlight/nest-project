@@ -10,7 +10,7 @@ import {
   MaxLength,
 } from 'class-validator';
 
-export class CreatePublicationValidation {
+export class PublicationValidationSchema {
   @IsNotEmpty()
   @IsString()
   readonly categoryAirline: string;

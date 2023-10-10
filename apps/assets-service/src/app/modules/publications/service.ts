@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 
 import { ErrorHandler } from '@backend';
-import { CreatePublicationValidation, UpdatePublicationValidation } from '@common';
+import { PublicationValidationSchema } from '@common';
 import { MongoDbPublications } from '../../database/models';
 import { GetListQueryParams } from './helpers';
 import { IPublicationsModule } from './interface';
@@ -15,7 +15,7 @@ export class PublicationsService implements IPublicationsModule {
     @Inject(ErrorHandler) private readonly errorHandler: ErrorHandler,
   ) {}
 
-  public async create(dto: CreatePublicationValidation) {
+  public async create(dto: PublicationValidationSchema) {
     try {
       const newPublication = await this.publicationsModel.create(dto);
 
@@ -74,7 +74,7 @@ export class PublicationsService implements IPublicationsModule {
     }
   }
 
-  public async update(id: Types.ObjectId, dto: UpdatePublicationValidation) {
+  public async update(id: Types.ObjectId, dto: PublicationValidationSchema) {
     try {
       const publication = await this.publicationsModel.findByIdAndUpdate(id, dto, { new: true }).lean();
 

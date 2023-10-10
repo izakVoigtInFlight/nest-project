@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { CreatePublicationValidation } from '@common';
+import { PublicationValidationSchema } from '@common';
 
 @Schema({ timestamps: true, versionKey: false, collectionOptions: { dbName: 'publications' } })
-export class MongoDbPublications implements CreatePublicationValidation {
+export class MongoDbPublications implements PublicationValidationSchema {
   @Prop({ type: String, required: true })
   categoryAirline: string;
 

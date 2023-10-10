@@ -6,10 +6,9 @@ import { Model } from 'mongoose';
 import { ErrorHandler } from '@backend';
 import { MongoDbPublications } from '../../../database/models';
 import {
-  defaultCreatePublication,
   defaultGetListQueryParams,
   defaultParamIdPublication,
-  defaultUpdatePublication,
+  defaultPublicationReqBody,
   publicationFakerObject,
 } from './helpers';
 import { PublicationsService } from '../service';
@@ -64,7 +63,7 @@ describe('Publications service unit test', () => {
 
   describe('Create publication', () => {
     it('should create a new publication', async () => {
-      const result = await service.create(defaultCreatePublication);
+      const result = await service.create(defaultPublicationReqBody);
 
       expect(result).toEqual(publicationFakerObject);
       expect(publicationModel.create).toHaveBeenCalledTimes(1);
@@ -73,7 +72,7 @@ describe('Publications service unit test', () => {
     it('should try to create a new publication, fail and send the error to the erroHandler to deal with properly', async () => {
       jest.spyOn(publicationModel, 'create').mockRejectedValue(new Error());
 
-      await service.create(defaultCreatePublication);
+      await service.create(defaultPublicationReqBody);
 
       expect(errorHandler.handle).toHaveBeenCalledTimes(1);
       expect(errorHandler.handle).toHaveBeenCalledWith(expect.any(Error));
@@ -151,12 +150,12 @@ describe('Publications service unit test', () => {
 
   describe('Update publication', () => {
     it('should update a publication', async () => {
-      await service.update(defaultParamIdPublication, defaultUpdatePublication);
+      await service.update(defaultParamIdPublication, defaultPublicationReqBody);
 
       expect(publicationModel.findByIdAndUpdate).toHaveBeenCalledTimes(1);
       expect(publicationModel.findByIdAndUpdate).toHaveBeenCalledWith(
         defaultParamIdPublication,
-        defaultUpdatePublication,
+        defaultPublicationReqBody,
         { new: true },
       );
     });
@@ -164,12 +163,12 @@ describe('Publications service unit test', () => {
     it('should try to update a publication but do not find it', async () => {
       jest.spyOn(publicationModel, 'findByIdAndUpdate').mockResolvedValue(undefined);
 
-      await service.update(defaultParamIdPublication, defaultUpdatePublication);
+      await service.update(defaultParamIdPublication, defaultPublicationReqBody);
 
       expect(publicationModel.findByIdAndUpdate).toHaveBeenCalledTimes(1);
       expect(publicationModel.findByIdAndUpdate).toHaveBeenCalledWith(
         defaultParamIdPublication,
-        defaultUpdatePublication,
+        defaultPublicationReqBody,
         { new: true },
       );
     });
@@ -177,7 +176,7 @@ describe('Publications service unit test', () => {
     it('should try to update a publication, fail and send the error to the erroHandler to deal with properly', async () => {
       jest.spyOn(publicationModel, 'findById').mockRejectedValue(new Error());
 
-      await service.update(defaultParamIdPublication, defaultUpdatePublication);
+      await service.update(defaultParamIdPublication, defaultPublicationReqBody);
 
       expect(errorHandler.handle).toHaveBeenCalledTimes(1);
       expect(errorHandler.handle).toHaveBeenCalledWith(expect.any(Error));

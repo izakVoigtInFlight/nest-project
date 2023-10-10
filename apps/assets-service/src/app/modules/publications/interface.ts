@@ -1,7 +1,7 @@
 import { Types } from 'mongoose';
 
 import { DefaultPaginationReturn } from '@backend';
-import { CreatePublicationValidation, UpdatePublicationValidation } from '@common';
+import { PublicationValidationSchema } from '@common';
 import { MongoDbPublications } from '../../database/models';
 import { GetListQueryParams } from './helpers';
 
@@ -10,9 +10,9 @@ interface GetList extends DefaultPaginationReturn {
 }
 
 export interface IPublicationsModule {
-  create: (dto: CreatePublicationValidation) => Promise<MongoDbPublications>;
+  create: (dto: PublicationValidationSchema) => Promise<MongoDbPublications>;
   delete: (id: Types.ObjectId) => Promise<void>;
   getData: (id: Types.ObjectId) => Promise<MongoDbPublications>;
   getList: (queryParams: GetListQueryParams) => Promise<GetList>;
-  update: (id: Types.ObjectId, dto: UpdatePublicationValidation) => Promise<MongoDbPublications>;
+  update: (id: Types.ObjectId, dto: PublicationValidationSchema) => Promise<MongoDbPublications>;
 }

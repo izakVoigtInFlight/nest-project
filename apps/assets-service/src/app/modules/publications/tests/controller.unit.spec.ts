@@ -1,10 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 import {
-  defaultCreatePublication,
   defaultGetListQueryParams,
   defaultParamIdPublication,
-  defaultUpdatePublication,
+  defaultPublicationReqBody,
   publicationFakerObject,
 } from './helpers';
 import { PublicationsController } from '../controller';
@@ -41,7 +40,7 @@ describe('Publications controller unit test', () => {
 
   describe('Create endpoint', () => {
     it('should create a new publicaiton', async () => {
-      const result = await controller.create(defaultCreatePublication);
+      const result = await controller.create(defaultPublicationReqBody);
 
       expect(result).toEqual(publicationFakerObject);
       expect(service.create).toHaveBeenCalledTimes(1);
@@ -76,7 +75,7 @@ describe('Publications controller unit test', () => {
 
   describe('Update endpoint', () => {
     it('should update publication', async () => {
-      const result = await controller.update(defaultParamIdPublication, defaultUpdatePublication);
+      const result = await controller.update(defaultParamIdPublication, defaultPublicationReqBody);
 
       expect(result).toEqual(publicationFakerObject);
       expect(service.update).toHaveBeenCalledTimes(1);
