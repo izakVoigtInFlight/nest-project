@@ -1,0 +1,6 @@
+node_modules
+.vscode
+.editorconfig
+jest.config.ts
+jest.preset.js
+README.md
