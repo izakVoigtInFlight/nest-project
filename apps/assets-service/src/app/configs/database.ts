@@ -7,5 +7,6 @@ export const mongoDbOptions: MongooseModuleAsyncOptions = {
   useFactory: (configService: ConfigService) => ({
     uri: configService.get<string>('mongoDbUri'),
     retryAttempts: 5,
+    dbName: 'assets-service',
   }),
 };

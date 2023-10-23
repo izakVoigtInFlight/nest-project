@@ -101,7 +101,6 @@ describe('Publications module e2e test', () => {
 
   describe('(DELETE) delete publication endpoint', () => {
     it('should delete a publication', () => {
-      // @ts-ignore
       return request.default(app.getHttpServer()).delete(`${rootPath}/${publication._id}`).expect(200);
     });
 
@@ -130,22 +129,19 @@ describe('Publications module e2e test', () => {
 
   describe('(GET) get publication data endpoint', () => {
     it('should get publication data', () => {
-      return (
-        request
-          .default(app.getHttpServer())
-          // @ts-ignore
-          .get(`${rootPath}/${publication._id}`)
-          .expect(200)
-          .expect('Content-Type', /json/)
-          .expect(response => {
-            expect(response.body).toEqual({
-              ...defaultPublicationReqBody,
-              _id: expect.any(String),
-              createdAt: expect.any(String),
-              updatedAt: expect.any(String),
-            });
-          })
-      );
+      return request
+        .default(app.getHttpServer())
+        .get(`${rootPath}/${publication._id}`)
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect(response => {
+          expect(response.body).toEqual({
+            ...defaultPublicationReqBody,
+            _id: expect.any(String),
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+          });
+        });
     });
 
     it('should try to get an unexistent publication', () => {
@@ -214,23 +210,20 @@ describe('Publications module e2e test', () => {
 
   describe('(PUT) update publication endpoint', () => {
     it('should update a publication', () => {
-      return (
-        request
-          .default(app.getHttpServer())
-          // @ts-ignore
-          .put(`${rootPath}/${publication._id}`)
-          .send(defaultPublicationReqBody)
-          .expect(200)
-          .expect('Content-Type', /json/)
-          .expect(response => {
-            expect(response.body).toEqual({
-              ...defaultPublicationReqBody,
-              _id: expect.any(String),
-              createdAt: expect.any(String),
-              updatedAt: expect.any(String),
-            });
-          })
-      );
+      return request
+        .default(app.getHttpServer())
+        .put(`${rootPath}/${publication._id}`)
+        .send(defaultPublicationReqBody)
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect(response => {
+          expect(response.body).toEqual({
+            ...defaultPublicationReqBody,
+            _id: expect.any(String),
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+          });
+        });
     });
 
     it('should try to update a publication with an invalid body', () => {
@@ -238,49 +231,46 @@ describe('Publications module e2e test', () => {
         language: faker.number.float(), // Invalid float
       };
 
-      return (
-        request
-          .default(app.getHttpServer())
-          // @ts-ignore
-          .put(`${rootPath}/${publication._id}`)
-          .send(invalidBody)
-          .expect(400)
-          .expect('Content-Type', /json/)
-          .expect(response => {
-            expect(response.body.message).toEqual([
-              'categoryAirline must be a string',
-              'categoryAirline should not be empty',
-              'categoryProcurement must be a string',
-              'categoryProcurement should not be empty',
-              'distributor must be a string',
-              'distributor should not be empty',
-              'genre must contain at least 1 elements',
-              'each value in genre must be a string',
-              'genre must be an array',
-              'genre should not be empty',
-              'lab must be a string',
-              'lab should not be empty',
-              'language must contain at least 1 elements',
-              'each value in language must be a string',
-              'language must be an array',
-              'needDrm must be a boolean value',
-              'needDrm should not be empty',
-              'needWireless must be a boolean value',
-              'needWireless should not be empty',
-              'originalSynopsis must be shorter than or equal to 300 characters',
-              'originalSynopsis must be a string',
-              'originalSynopsis should not be empty',
-              'originalTitle must be a string',
-              'originalTitle should not be empty',
-              'originCountry must be a string',
-              'originCountry should not be empty',
-              'quantity must be a positive number',
-              'quantity must be an integer number',
-              'quantity should not be empty',
-            ]);
-            expect(response.body.error).toEqual('Bad Request');
-          })
-      );
+      return request
+        .default(app.getHttpServer())
+        .put(`${rootPath}/${publication._id}`)
+        .send(invalidBody)
+        .expect(400)
+        .expect('Content-Type', /json/)
+        .expect(response => {
+          expect(response.body.message).toEqual([
+            'categoryAirline must be a string',
+            'categoryAirline should not be empty',
+            'categoryProcurement must be a string',
+            'categoryProcurement should not be empty',
+            'distributor must be a string',
+            'distributor should not be empty',
+            'genre must contain at least 1 elements',
+            'each value in genre must be a string',
+            'genre must be an array',
+            'genre should not be empty',
+            'lab must be a string',
+            'lab should not be empty',
+            'language must contain at least 1 elements',
+            'each value in language must be a string',
+            'language must be an array',
+            'needDrm must be a boolean value',
+            'needDrm should not be empty',
+            'needWireless must be a boolean value',
+            'needWireless should not be empty',
+            'originalSynopsis must be shorter than or equal to 300 characters',
+            'originalSynopsis must be a string',
+            'originalSynopsis should not be empty',
+            'originalTitle must be a string',
+            'originalTitle should not be empty',
+            'originCountry must be a string',
+            'originCountry should not be empty',
+            'quantity must be a positive number',
+            'quantity must be an integer number',
+            'quantity should not be empty',
+          ]);
+          expect(response.body.error).toEqual('Bad Request');
+        });
     });
 
     it('should try to update an unexistent publication', () => {
